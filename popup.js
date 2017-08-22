@@ -1,7 +1,60 @@
 'use strict';
 
-this.close();
-chrome.runtime.sendMessage({directive: 'clicked-extension-button'}, function(response) {});
+
+// chrome.runtime.sendMessage({directive: 'clicked-extension-button'}, function(response) {});
+
+var currentTab;
+const version = "1.0";
+const queryInfo = {
+    active: true,
+    currentWindow: true
+};
+var _this = this;
+chrome.tabs.query(queryInfo, function(tabs) {
+    currentTab = tabs[0];
+    // alert(currentTab);
+    chrome.runtime.sendMessage({directive: 'clicked-extension-button', tab: currentTab}, function(response) {});
+    _this.close();
+    // alert('A');
+    // chrome.debugger.detach({ tabId: currentTab.id });
+    // chrome.debugger.attach({
+    //     tabId: currentTab.id
+    // }, version, function() {
+    //     if (chrome.runtime.lastError) {
+    //         console.log(chrome.runtime.lastError.message);
+    //         return;
+    //     }
+    //     chrome.debugger.sendCommand({
+    //         tabId: currentTab.id
+    //     }, "Network.enable", {}, function(response) {
+    //         chrome.debugger.onEvent.addListener(allEventHandler);
+    //     });
+    // });
+});
+
+function allEventHandler(debuggerId, message, params) {
+    if (currentTab.id != debuggerId.tabId) {
+        return;
+    }
+
+    if (message == "Network.responseReceived") { //response return 
+        if (params.type === 'XHR') {
+            chrome.debugger.sendCommand({
+                tabId: debuggerId.tabId
+            }, "Network.getResponseBody", {
+                "requestId": params.requestId
+            }, gotTheResponse);
+        }
+    }
+
+    function gotTheResponse(response) {
+        chrome.runtime.sendMessage({directive: 'test', content: response}, function(resp) {});
+        console.log(params);
+        console.log(response);
+    }
+
+}
+
 
 
 // function clickHandler(e) {

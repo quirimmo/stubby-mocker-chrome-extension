@@ -13,10 +13,13 @@ const DEFAULT_WINDOW_OPTIONS = {
 
 // reference to the main window
 let windowReference;
+// reference to the current tab
+let currentTab;
 // listener for messages received from other scripts
 chrome.runtime.onMessage.addListener(onMessageReceived);
 
 function onMessageReceived(request, sender, sendResponse) {
+    currentTab = request.tab;
     switch (request.directive) {
         case 'clicked-extension-button':
             onExtensionButtonClicked(sendResponse);
@@ -34,7 +37,7 @@ function onExtensionButtonClicked(sendResponse) {
     }
     // get the main window reference in order to check if it is open or not
     chrome.windows.get(windowReference.id, getChromeWindow);
-    
+
     function getChromeWindow(chromeWindow) {
         // if the main window is open, focus the main window and return
         if (!chrome.runtime.lastError && chromeWindow) {

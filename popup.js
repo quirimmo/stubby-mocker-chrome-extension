@@ -1,12 +1,36 @@
+'use strict';
 
-        // "default_popup": "popup.html",
-        // "default_title": "Click here!"
+this.close();
+chrome.runtime.sendMessage({directive: 'clicked-extension-button'}, function(response) {});
 
-// chrome.windows.create({'url': 'main.html', 'type': 'popup'}, function(window) {
-//     setTimeout(function() {
-//         window.focus();
-//     }, 2000);
-// });
+
+// function clickHandler(e) {
+//     chrome.runtime.sendMessage({directive: "open"}, function(response) {
+//         this.close(); // close the popup when the background finishes processing request
+//     });
+// }
+
+// document.addEventListener('DOMContentLoaded', function () {
+//     document.getElementById('click-me').addEventListener('click', clickHandler);
+// })
+
+// "default_popup": "popup.html",
+// "default_title": "Click here!"
+// let windowReference;
+// if (windowReference) {
+//     chrome.windows.update(windowReference.id, {
+//         focused: true
+//     });
+// }
+// else {
+//     chrome.windows.create({ 'url': 'background.html', 'type': 'popup' }, function(window) {
+//         windowReference = window;
+//         chrome.windows.update(windowReference.id, {
+//             focused: true
+//         });
+//     });
+// }
+
 
 // chrome.browserAction.onClicked.addListener(function(tab) {
 //     chrome.windows.create({
@@ -16,12 +40,13 @@
 //         win.focus();
 //     });
 // });
-chrome.windows.create({
-    url: chrome.runtime.getURL("main.html"),
-    type: "popup"
-}, function(win) {
-    win.focus();
-});
+
+// chrome.windows.create({
+//     url: chrome.runtime.getURL("main.html"),
+//     type: "popup"
+// }, function(win) {
+//     win.focus();
+// });
 
 // var currentTab;
 // const version = "1.0";

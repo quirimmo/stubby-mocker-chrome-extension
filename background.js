@@ -39,6 +39,7 @@ function onExtensionButtonClicked(sendResponse, request) {
 
 function createMainWindow(sendResponse, request) {
     chrome.windows.create(DEFAULT_WINDOW_OPTIONS, onMainWindowCreated);
+    chrome.windows.onRemoved.addListener(onWindowsRemoved);
 
     function onMainWindowCreated(window) {
         windowReferences.push({
@@ -46,6 +47,13 @@ function createMainWindow(sendResponse, request) {
             window: window
         });
         sendResponse({});
+    }
+
+    function onWindowsRemoved(id) {
+        let ind = windowReferences.findIndex(el => el.window.id === id);
+        if (ind > -1) {
+            windowReferences.splice(ind, 1);
+        }
     }
 }
 
@@ -65,51 +73,51 @@ function onCurrentTabRequest(sendResponse, request) {
         tabId: lastWindow.tab.id
     }, '1.0', onAttach.bind(null, lastWindow.tab.id));
     sendResponse({
-        tab: lastWindow.tab,
-        debugger: chrome.debugger
+        tab: lastWindow.tab
     });
 }
 
 function onAttach(tabId) {
+
     if (chrome.runtime.lastError) {
         alert(chrome.runtime.lastError.message);
         return;
-	}
-	chrome.debugger.sendCommand({
-		tabId: tabId
-	}, "Network.enable", {}, onNetworkEnabled);
-	
-	function onNetworkEnabled(resp) {
-		chrome.debugger.onEvent.addListener(allEventHandler);
+    }
+    chrome.debugger.sendCommand({
+        tabId: tabId
+    }, "Network.enable", {}, onNetworkEnabled);
 
-		function allEventHandler(debuggerId, message, params) {
-			if (tabId != debuggerId.tabId) {
-				return;
-			}
+    function onNetworkEnabled(resp) {
+        chrome.debugger.onEvent.addListener(allEventHandler);
 
-			if (message == "Network.responseReceived") {
-				if (params.type === 'XHR') {
-					chrome.debugger.sendCommand({
-						tabId: debuggeeId
-					}, "Network.getResponseBody", {
-						"requestId": params.requestId
-					}, onResponseReceived);
-				}
-			}
+        function allEventHandler(debuggerId, message, params) {
+            if (tabId != debuggerId.tabId) {
+                return;
+            }
 
-			function onResponseReceived(xhrResponse) {
-				alert('response received');
-				console.log(params);
-				console.log(xhrResponse);
-			}
+            if (message == "Network.responseReceived") {
+                if (params.type === 'XHR') {
+                    chrome.debugger.sendCommand({
+                        tabId: tabId
+                    }, "Network.getResponseBody", {
+                        "requestId": params.requestId
+                    }, onResponseReceived);
+                }
+            }
 
-		}
-	}
+            function onResponseReceived(xhrResponse) {
+                alert(xhrResponse);
+                console.log(params);
+                console.log(xhrResponse);
+            }
+
+        }
+    }
 }
 
 
 function onDetach(debuggeeId) {
-	// alert('detached');
+    // alert('detached');
 }
 
 

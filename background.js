@@ -11,61 +11,141 @@ const DEFAULT_WINDOW_OPTIONS = {
     height: 768
 };
 
-// reference to the main window
-let windowReference;
-// reference to the current tab
-let currentTab;
 // listener for messages received from other scripts
 chrome.runtime.onMessage.addListener(onMessageReceived);
 
 function onMessageReceived(request, sender, sendResponse) {
-    currentTab = request.tab;
     switch (request.directive) {
         case 'clicked-extension-button':
-            onExtensionButtonClicked(sendResponse);
+            onExtensionButtonClicked(sendResponse, request);
             break;
+        case 'current-tab':
+            onCurrentTabRequest(sendResponse, request);
         default:
-            onNotExpectedMessage(request, sender);
             break;
     }
 }
 
-function onExtensionButtonClicked(sendResponse) {
-    if (!windowReference) {
-        createMainWindow(sendResponse);
-        return;
-    }
-    // get the main window reference in order to check if it is open or not
-    chrome.windows.get(windowReference.id, getChromeWindow);
+// references to opened windows
+let windowReferences = [];
 
-    function getChromeWindow(chromeWindow) {
-        // if the main window is open, focus the main window and return
-        if (!chrome.runtime.lastError && chromeWindow) {
-            focusMainWindow(sendResponse);
-            return;
-        }
-        // otherwise create the main window
-        createMainWindow(sendResponse);
+function onExtensionButtonClicked(sendResponse, request) {
+    if (!windowReferences.find(el => el.tab.id === request.tab.id)) {
+        createMainWindow(sendResponse, request);
+    } else {
+        focusMainWindow(sendResponse, request);
     }
 }
 
-function focusMainWindow(sendResponse) {
-    chrome.windows.update(windowReference.id, {
-        focused: true
-    }, sendResponse.bind(null, {}));
-}
-
-function createMainWindow(sendResponse) {
+function createMainWindow(sendResponse, request) {
     chrome.windows.create(DEFAULT_WINDOW_OPTIONS, onMainWindowCreated);
 
     function onMainWindowCreated(window) {
-        windowReference = window;
+        windowReferences.push({
+            tab: request.tab,
+            window: window
+        });
         sendResponse({});
     }
 }
 
-function onNotExpectedMessage(request, sender) {
-    let msg = `Unmatched request of ${request} from ${sender}`;
-    alert(msg);
-    throw new Error(msg);
+function focusMainWindow(sendResponse, request) {
+    let currentWindow = windowReferences.find(el => el.tab.id === request.tab.id);
+    chrome.windows.update(currentWindow.window.id, {
+        focused: true
+    }, sendResponse.bind(null, {}));
 }
+
+function onCurrentTabRequest(sendResponse, request) {
+    let lastWindow = windowReferences[windowReferences.length - 1];
+    chrome.debugger.detach({
+        tabId: lastWindow.tab.id
+    }, onDetach.bind(null, lastWindow.tab.id));
+    chrome.debugger.attach({
+        tabId: lastWindow.tab.id
+    }, '1.0', onAttach.bind(null, lastWindow.tab.id));
+    sendResponse({
+        tab: lastWindow.tab,
+        debugger: chrome.debugger
+    });
+}
+
+function onAttach(tabId) {
+    if (chrome.runtime.lastError) {
+        alert(chrome.runtime.lastError.message);
+        return;
+	}
+	chrome.debugger.sendCommand({
+		tabId: tabId
+	}, "Network.enable", {}, onNetworkEnabled);
+	
+	function onNetworkEnabled(resp) {
+		chrome.debugger.onEvent.addListener(allEventHandler);
+
+		function allEventHandler(debuggerId, message, params) {
+			if (tabId != debuggerId.tabId) {
+				return;
+			}
+
+			if (message == "Network.responseReceived") {
+				if (params.type === 'XHR') {
+					chrome.debugger.sendCommand({
+						tabId: debuggeeId
+					}, "Network.getResponseBody", {
+						"requestId": params.requestId
+					}, onResponseReceived);
+				}
+			}
+
+			function onResponseReceived(xhrResponse) {
+				alert('response received');
+				console.log(params);
+				console.log(xhrResponse);
+			}
+
+		}
+	}
+}
+
+
+function onDetach(debuggeeId) {
+	// alert('detached');
+}
+
+
+// chrome.debugger.detach({ tabId: currentTab.id });
+// chrome.debugger.attach({
+//     tabId: currentTab.id
+// }, version, function() {
+//     if (chrome.runtime.lastError) {
+//         console.log(chrome.runtime.lastError.message);
+//         return;
+//     }
+//     chrome.debugger.sendCommand({
+//         tabId: currentTab.id
+//     }, "Network.enable", {}, function(response) {
+//         chrome.debugger.onEvent.addListener(allEventHandler);
+//     });
+// });
+
+// function allEventHandler(debuggerId, message, params) {
+//     if (currentTab.id != debuggerId.tabId) {
+//         return;
+//     }
+
+//     if (message == "Network.responseReceived") { //response return 
+//         if (params.type === 'XHR') {
+//             chrome.debugger.sendCommand({
+//                 tabId: debuggerId.tabId
+//             }, "Network.getResponseBody", {
+//                 "requestId": params.requestId
+//             }, gotTheResponse);
+//         }
+//     }
+
+//     function gotTheResponse(response) {
+//         console.log(params);
+//         console.log(response);
+//     }
+
+// }

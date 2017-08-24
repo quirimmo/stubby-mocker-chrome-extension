@@ -4,17 +4,17 @@
     "description": "This extension shows all the network calls performed by a page and it makes them available in the local storage if you want to access them. Then it automatically generates your mocked call if you are using stubby for mocking the apis",
     "version": "1.0",
     "browser_action": {
-        "default_icon": "mocker-icon.png",
-        "default_popup": "popup.html",
-        "default_title": "Click here!"
+        "default_icon": "./src/images/mocker-icon.png",
+        "default_popup": "./src/popup.html",
+        "default_title": "Network calls mocker with stubby dynamic generator"
     },
     "background": {
-        "scripts": ["background.js"]
+        "scripts": ["./src/background.js"]
     },
     "icons": {
-        "16": "mocker-icon.png",
-        "48": "mocker-icon.png",
-        "128": "mocker-icon.png"
+        "16": "./src/images/mocker-icon.png",
+        "48": "./src/images/mocker-icon.png",
+        "128": "./src/images/mocker-icon.png"
     },
     "permissions": [
         "tabs",

@@ -2,7 +2,7 @@
 
 // default window options
 const DEFAULT_WINDOW_OPTIONS = {
-    url: 'background.html',
+    url: './src/background.html',
     type: 'popup',
     focused: true,
     top: 0,

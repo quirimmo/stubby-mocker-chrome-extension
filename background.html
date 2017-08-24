@@ -2,7 +2,7 @@
 <html data-ng-app="myApp">
 
 <head>
-    <title>MOCKER CHROME EXTENSION</title>
+    <title>Network calls mocker with stubby dynamic generator</title>
     <style>
         [ng\:cloak],
         [ng-cloak],
@@ -17,18 +17,26 @@
 </head>
 
 <body data-ng-controller="MainController">
-    <div>
-		MY APP {{2 + 3}}
-	</div>
-	<div>
-		{{test}}
-	</div>
-	<div>
-		Current tab id: {{currentTabID}}
+    
+    <div class="main-container">
+        <div>
+            Current tab id: {{currentTabID}}
+        </div>
+        <div>
+            Current tab title: {{currentTabTitle}}
+        </div>
+        <div>
+            <button ng-click="clearResponses()">Clear</button>
+        </div>
+        <div ng-repeat="response in responses track by $index">
+            <div>
+                Response {{$index}}
+            </div>
+            <!-- <pre>{{response.response}}</pre>
+            <pre>{{response.params}}</pre> -->
+        </div>
     </div>
-    <div>
-		Current tab title: {{currentTabTitle}}
-	</div>
+
 
     <script src="jquery-3.2.1.min.js"></script>
     <script src="angular.min.js"></script>

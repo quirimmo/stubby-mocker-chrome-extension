@@ -1,20 +1,21 @@
 {
     "manifest_version": 2,
-    "name": "Getting started example",
-    "description": "This extension shows a Google Image search result for the current page",
+    "name": "Network calls mocker with stubby dynamic generator",
+    "description": "This extension shows all the network calls performed by a page and it makes them available in the local storage if you want to access them. Then it automatically generates your mocked call if you are using stubby for mocking the apis",
     "version": "1.0",
     "browser_action": {
-        "default_icon": "icon.png",
+        "default_icon": "mocker-icon.png",
         "default_popup": "popup.html",
         "default_title": "Click here!"
     },
     "background": {
         "scripts": ["background.js"]
     },
-    "web_accessible_resources": [
-        "style.css",
-        "jquery-3.2.1.min.js"
-    ],
+    "icons": {
+        "16": "mocker-icon.png",
+        "48": "mocker-icon.png",
+        "128": "mocker-icon.png"
+    },
     "permissions": [
         "tabs",
         "debugger",

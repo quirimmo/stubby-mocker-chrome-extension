@@ -1,0 +1,19 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #bae1fe;
+    /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#bae1fe, #387ffa);
+    /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#bae1fe, #387ffa);
+    /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#bae1fe, #387ffa);
+    /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#bae1fe, #387ffa);
+    /* Standard syntax */
+}

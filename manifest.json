@@ -19,9 +19,6 @@
     "permissions": [
         "tabs",
         "debugger",
-        "webRequest",
-        "*://*/",
-        "activeTab",
-        "https://ajax.googleapis.com/"
+        "activeTab"
     ]
 }

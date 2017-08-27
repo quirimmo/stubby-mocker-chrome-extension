@@ -1,21 +1,26 @@
 'use strict';
 
-angular.module('myApp').controller('MainController', ['$scope', function($scope) {
+angular.module('myApp').controller('MainController', ['$scope', 'chromeService', function($scope, chromeService) {
 
     $scope.responses = [];
     $scope.clearResponses = clearResponses;
 
+    chromeService.sendMessage({ directive: 'current-tab' }, onMsgCurrentTabResponse);
+    chromeService.addListener(onMessageReceived);
+
+
+
+    function onMsgCurrentTabResponse(response) {
+        $scope.currentTabTitle = response.tab.title;
+        $scope.currentTabID = response.tab.id;
+        $scope.$apply();
+    }
+
+    
     function clearResponses() {
         $scope.responses.length = 0;
     }
 
-    chrome.runtime.sendMessage({ directive: 'current-tab' }, function(response) {
-        $scope.currentTabTitle = response.tab.title;
-        $scope.currentTabID = response.tab.id;
-        $scope.$apply();
-    });
-    
-    chrome.runtime.onMessage.addListener(onMessageReceived);
     
     function onMessageReceived(request, sender, sendResponse) {
         switch (request.directive) {
@@ -28,7 +33,6 @@ angular.module('myApp').controller('MainController', ['$scope', function($scope)
     }
 
     function manageNetworkRequestResponse(sendResponse, request) {
-        console.log('adding request to the queue');
         $scope.responses.push({
             response: request.response,
             params: request.params

@@ -13,33 +13,44 @@
             display: none !important;
         }
     </style>
+    <link rel="stylesheet" media="all" href="./vendors/angular-material.min.js">
     <link rel="stylesheet" media="all" href="./styles/style.css">
 </head>
 
-<body data-ng-controller="MainController">
-    
-    <div class="main-container">
-        <div>
-            Current tab id: {{currentTabID}}
-        </div>
-        <div>
-            Current tab title: {{currentTabTitle}}
-        </div>
-        <div>
-            <button ng-click="clearResponses()">Clear</button>
-        </div>
-        <div ng-repeat="response in responses track by $index">
+<body data-ng-controller="MainController" ng-cloak>
+    <md-content>
+        <div class="main-container">
             <div>
-                Response {{$index}}
+                Current tab id: {{currentTabID}}
             </div>
-            <!-- <pre>{{response.response}}</pre>
-            <pre>{{response.params}}</pre> -->
+            <div>
+                Current tab title: {{currentTabTitle}}
+            </div>
+            <div>
+                <button ng-click="clearResponses()">Clear</button>
+            </div>
+            <div ng-repeat="response in responses track by $index">
+                <div>
+
+                </div>
+
+                <div ng-click="showChildren = !showChildren">
+                    <div>Response {{$index + 1}}</div>
+                    <div ng-show="showChildren">
+                        <pre>{{response.response}}</pre>
+                        <pre>{{response.params}}</pre>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </md-content>
 
 
     <script src="./vendors/jquery-3.2.1.min.js"></script>
     <script src="./vendors/angular.min.js"></script>
+    <script src="./vendors/angular-aria.min.js"></script>
+    <script src="./vendors/angular-animate.min.js"></script>
+    <script src="./vendors/angular-material.min.js"></script>
     <script src="./app/app.js"></script>
     <script src="./app/controllers/main.controller.js"></script>
     <script src="./app/services/chrome.service.js"></script>

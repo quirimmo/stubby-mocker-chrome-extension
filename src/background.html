@@ -27,18 +27,22 @@
                 Current tab title: {{currentTabTitle}}
             </div>
             <div>
-                <button ng-click="clearResponses()">Clear</button>
+                <button ng-click="clearData()">Clear</button>
             </div>
-            <div ng-repeat="response in responses track by $index">
-                <div>
-
-                </div>
-
-                <div ng-click="showChildren = !showChildren">
-                    <div>Response {{$index + 1}}</div>
-                    <div ng-show="showChildren">
-                        <pre>{{response.response}}</pre>
-                        <pre>{{response.params}}</pre>
+            <div ng-repeat="item in data track by $index">
+                <div ng-click="item.showDetails = !item.showDetails">Request {{$index + 1}}</div>
+                <div ng-show="item.showDetails">
+                    <div ng-click="item.showRequestDetails = !item.showRequestDetails">
+                        Request Details
+                    </div>
+                    <div ng-show="item.showRequestDetails">
+                        <pre>{{item.details.request}}</pre>
+                    </div>
+                    <div ng-click="item.showResponseDetails = !item.showResponseDetails">
+                        Response Details
+                    </div>
+                    <div ng-show="item.showResponseDetails">
+                        <pre>{{item.details.response}}</pre>
                     </div>
                 </div>
             </div>

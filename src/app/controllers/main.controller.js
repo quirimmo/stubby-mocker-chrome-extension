@@ -2,26 +2,11 @@
 
 angular.module('myApp').controller('MainController', ['$scope', 'chromeService', function($scope, chromeService) {
 
-    $scope.responses = [];
-    $scope.clearResponses = clearResponses;
+    $scope.data = [];
+    $scope.clearData = clearData;
 
     chromeService.sendMessage({ directive: 'current-tab' }, onMsgCurrentTabResponse);
     chromeService.addListener(onMessageReceived);
-
-
-    $scope.accordianData = [{
-            "heading": "HOLDEN",
-            "content": "GM Holden Ltd, commonly known as Holden, is an Australian automaker that operates in Australasia and is headquartered in Port Melbourne, Victoria. The company was founded in 1856 as a saddlery manufacturer in South Australia."
-        },
-        {
-            "heading": "FORD",
-            "content": "The Ford Motor Company (commonly referred to as simply Ford) is an American multinational automaker headquartered in Dearborn, Michigan, a suburb of Detroit. It was founded by Henry Ford and incorporated on June 16, 1903."
-        },
-        {
-            "heading": "TOYOTA",
-            "content": "Toyota Motor Corporation is a Japanese automotive manufacturer which was founded by Kiichiro Toyoda in 1937 as a spinoff from his father's company Toyota Industries, which is currently headquartered in Toyota, Aichi Prefecture, Japan."
-        }
-    ];
 
 
     function onMsgCurrentTabResponse(response) {
@@ -31,8 +16,8 @@ angular.module('myApp').controller('MainController', ['$scope', 'chromeService',
     }
 
 
-    function clearResponses() {
-        $scope.responses.length = 0;
+    function clearData() {
+        $scope.data.length = 0;
     }
 
 
@@ -47,12 +32,32 @@ angular.module('myApp').controller('MainController', ['$scope', 'chromeService',
     }
 
     function manageNetworkRequestResponse(sendResponse, request) {
-        $scope.responses.push({
-            response: request.response,
-            params: request.params
+        $scope.data.push({
+            details: getRelevantRequestDetails(request)
         });
         $scope.$apply();
         sendResponse({});
+    }
+
+    function getRelevantRequestDetails(request) {
+        return {
+            request: {
+                id: request.params.requestId,
+                url: request.params.response.url,
+                timestamp: request.params.response.timestamp,
+                type: request.params.response.type,
+                mimeType: request.params.response.mimeType,
+                remoteIPAddress: request.params.response.remoteIPAddress,
+                remotePort: request.params.response.remotePort,
+                headers: request.params.response.requestHeaders
+            },
+            response: {
+                status: request.params.response.status,
+                statusText: request.params.response.statusText,
+                body: request.response.body,
+                headers: request.params.response.headers
+            }
+        };
     }
 
 }]);

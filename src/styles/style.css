@@ -14,3 +14,16 @@ body {
     word-break: break-all;
     white-space: initial;
 }
+
+
+.request-list-item:hover {
+    background-color: rgba(158,158,158,0.2);
+}
+
+.request-list-item-content {
+    width: 100%;
+}
+
+.request-list-item *:focus {
+    outline: none;
+}

@@ -1,0 +1,26 @@
+<md-list-item class="md-1-line request-list-item">
+    <div class="md-list-item-text request-list-item-content" layout="column">
+
+        <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+            <h3>{{vm.item.details.request.url}}</h3>
+            <span flex></span>
+            <md-button class="md-raised md-primary" aria-label="Open Details" ng-click="vm.toggleDetails()">{{vm.toggleDetailsButtonText}}</md-button>
+        </section>
+
+        <div ng-show="vm.item.showDetails">
+            <div ng-click="vm.item.showRequestDetails = !vm.item.showRequestDetails">
+                Request Details
+            </div>
+            <div ng-show="vm.item.showRequestDetails">
+                <pre>{{vm.item.details.request}}</pre>
+            </div>
+            <div ng-click="vm.item.showResponseDetails = !vm.item.showResponseDetails">
+                Response Details
+            </div>
+            <div ng-show="vm.item.showResponseDetails">
+                <pre>{{vm.item.details.response}}</pre>
+            </div>
+        </div>
+    </div>
+    <md-divider></md-divider>
+</md-list-item>

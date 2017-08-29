@@ -4,22 +4,33 @@
         <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
             <h3>{{vm.item.details.request.url}}</h3>
             <span flex></span>
-            <md-button class="md-raised md-primary" aria-label="Open Details" ng-click="vm.toggleDetails()">{{vm.toggleDetailsButtonText}}</md-button>
+            <md-button class="md-raised md-primary request-item-buttons" aria-label="Open Details" ng-click="vm.toggleDetails()">
+                {{vm.toggleDetailsButtonText}}
+            </md-button>
+            <md-button class="md-raised md-primary request-item-buttons" aria-label="Remove Request" ng-click="vm.removeRequest()">
+                Remove Request
+            </md-button>
         </section>
 
         <div ng-show="vm.item.showDetails">
-            <div ng-click="vm.item.showRequestDetails = !vm.item.showRequestDetails">
-                Request Details
-            </div>
-            <div ng-show="vm.item.showRequestDetails">
-                <pre>{{vm.item.details.request}}</pre>
-            </div>
-            <div ng-click="vm.item.showResponseDetails = !vm.item.showResponseDetails">
-                Response Details
-            </div>
-            <div ng-show="vm.item.showResponseDetails">
-                <pre>{{vm.item.details.response}}</pre>
-            </div>
+
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="Request Details">
+                    <md-content class="md-padding">
+                        <div>
+                            <pre>{{vm.getPrettifiedJSON(vm.item.details.request)}}</pre>
+                        </div>
+                    </md-content>
+                </md-tab>
+                <md-tab label="Response Details">
+                    <md-content class="md-padding">
+                        <div>
+                            <pre>{{vm.getPrettifiedJSON(vm.item.details.response)}}</pre>
+                        </div>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+
         </div>
     </div>
     <md-divider></md-divider>

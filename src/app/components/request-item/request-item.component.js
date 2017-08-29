@@ -6,7 +6,8 @@
         controller: 'RequestItemController',
         controllerAs: 'vm',
         bindings: {
-            item: '='
+            item: '=',
+            onRemoveRequest: '&'
         }
     });
 

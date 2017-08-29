@@ -5,6 +5,7 @@ angular.module('myApp').controller('MainController', ['$scope', 'chromeService',
 
         $scope.data = [];
         $scope.clearData = clearData;
+        $scope.removeRequestItem = removeRequestItem;
         init();
 
 
@@ -21,6 +22,14 @@ angular.module('myApp').controller('MainController', ['$scope', 'chromeService',
 
         function clearData() {
             $scope.data.length = 0;
+        }
+
+        function removeRequestItem(item) {
+            let ind = $scope.data.findIndex(el => el.details.request.id === item.details.request.id);
+            if (ind > -1) {
+                $scope.data.splice(ind, 1);
+                $scope.$apply();
+            }
         }
 
         function onMessageReceived(request, sender, sendResponse) {

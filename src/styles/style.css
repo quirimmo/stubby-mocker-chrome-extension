@@ -12,9 +12,7 @@ body {
 .main-container pre{
     width: 100%;
     word-break: break-all;
-    white-space: initial;
 }
-
 
 .request-list-item:hover {
     background-color: rgba(158,158,158,0.2);
@@ -26,4 +24,18 @@ body {
 
 .request-list-item *:focus {
     outline: none;
+}
+
+.request-item-buttons {
+    min-height: fit-content;
+    line-height: inherit;
+    font-size: 12px;
+}
+
+.request-details {
+    cursor: pointer;
+}
+
+md-tabs {
+    padding-bottom: 20px;
 }

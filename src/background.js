@@ -7,8 +7,8 @@ const DEFAULT_WINDOW_OPTIONS = {
     focused: true,
     top: 0,
     left: 0,
-    width: 1024,
-    height: 768
+    width: 1200,
+    height: 800
 };
 
 // listener for messages received from other scripts

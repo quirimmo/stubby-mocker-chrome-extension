@@ -18,7 +18,7 @@
 </head>
 
 <body data-ng-controller="MainController" ng-cloak>
-    
+
     <md-content>
         <div class="main-container" layout="column">
 
@@ -34,7 +34,10 @@
 
             <md-list flex>
                 <md-subheader class="md-no-sticky">Sniffed Requests:</md-subheader>
-                <request-item ng-repeat="item in data track by $index" item="item">
+                <request-item 
+                ng-repeat="item in data track by $index" 
+                item="item"
+                on-remove-request="removeRequestItem(item)">
                 </request-item>
             </md-list>
 

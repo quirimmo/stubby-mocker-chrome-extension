@@ -7,6 +7,8 @@ angular.module('myApp').service('networkRequestsService', [function() {
     return this;
 
     function getRelevantRequestDetails(request) {
+        let bodyObj = request.response.body.toString();
+        bodyObj = JSON.parse(bodyObj);
         return {
             request: {
                 id: request.params.requestId,
@@ -21,7 +23,7 @@ angular.module('myApp').service('networkRequestsService', [function() {
             response: {
                 status: request.params.response.status,
                 statusText: request.params.response.statusText,
-                body: request.response.body,
+                body: bodyObj,
                 headers: request.params.response.headers
             }
         };

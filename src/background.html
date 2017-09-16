@@ -21,7 +21,7 @@
 
     <md-content>
         <div class="main-container" layout="column">
-
+            <!-- title toolbar -->
             <md-toolbar>
                 <div class="md-toolbar-tools">
                     <h2>
@@ -31,8 +31,14 @@
                     <md-button class="md-raised" aria-label="Clear" ng-click="clearData()">Clear</md-button>
                 </div>
             </md-toolbar>
-
-            <md-list flex>
+            <!-- loading section -->
+            <section ng-show="showLoading">
+                <md-divider></md-divider>
+                <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+                <md-divider></md-divider>
+            </section>
+            <!-- list of sniffed requests -->
+            <md-list ng-show="data.length" flex>
                 <md-subheader class="md-no-sticky">Sniffed Requests:</md-subheader>
                 <request-item 
                 ng-repeat="item in data track by $index" 
@@ -40,7 +46,6 @@
                 on-remove-request="removeRequestItem(item)">
                 </request-item>
             </md-list>
-
         </div>
     </md-content>
 

@@ -3,9 +3,9 @@
 
     angular.module('myApp').controller('RequestItemController', RequestItemController);
 
-    RequestItemController.$inject = [];
+    RequestItemController.$inject = ['$mdDialog'];
 
-    function RequestItemController() {
+    function RequestItemController($mdDialog) {
         var vm = this;
 
         vm.toggleDetailsButtonText = 'Open Details';
@@ -32,8 +32,64 @@
         }
 
         function removeRequest() {
-            vm.onRemoveRequest(vm.item);
+            var confirm = $mdDialog.confirm()
+                .title('Do you want to remove this request from the list?')
+                .ok('YES')
+                .cancel('NO');
+
+            $mdDialog.show(confirm)
+                .then(vm.onRemoveRequest.bind(null, vm.item))
+                .catch();
         }
+
+        // ======================================
+        // STUBBY STUFF
+        // ======================================
+        // {
+        //     "request": {
+        //         "url": "/services/reference-data/SalesProducts/$",
+        //         "method": "GET"
+        //     },
+        //     "response": {
+        //         "status": 200,
+        //         "headers": {
+        //             "Content-Type": "application/json",
+        //             "Access-Control-Allow-Origin": "*"
+        //         },
+        //         "body": {
+        //             "error": {
+        //                 "errorCode": "0",
+        //                 "errorString": "",
+        //                 "fieldErrors": []
+        //             },
+        //             "referenceDataList": [
+        //                 {
+        //                     "name": "SalesProducts",
+        //                     "labels": [
+        //                         "Current Account",
+        //                         "Regular Savings",
+        //                         "Deposit Savings",
+        //                         "Credit Card - Personal",
+        //                         "Credit Card - Business",
+        //                         "Loan - Personal",
+        //                         "Car Finance",
+        //                         "Loan - Business",
+        //                         "Mortgage",
+        //                         "Home Insurance",
+        //                         "Car Insurance",
+        //                         "Travel Insurance",
+        //                         "Investment",
+        //                         "Protection",
+        //                         "Pensions"
+        //                     ]
+        //                 }
+        //             ]
+        //         }
+        //     }
+        // },
+
+
+        // '/services/[0-9]+/send-registration-email-template/$':                            '/services/send-registration-email-template',
 
     }
 

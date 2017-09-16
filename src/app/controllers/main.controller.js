@@ -1,11 +1,15 @@
 'use strict';
 
-angular.module('myApp').controller('MainController', ['$scope', 'chromeService', 'networkRequestsService',
-    function($scope, chromeService, networkRequestsService) {
+angular.module('myApp').controller('MainController', ['$scope', 'chromeService', 'networkRequestsService', '$timeout',
+    function($scope, chromeService, networkRequestsService, $timeout) {
 
         $scope.data = [];
         $scope.clearData = clearData;
         $scope.removeRequestItem = removeRequestItem;
+        $scope.showLoading = false;
+
+        let timeout = null;
+
         init();
 
 
@@ -37,17 +41,34 @@ angular.module('myApp').controller('MainController', ['$scope', 'chromeService',
                 case 'network-request-response':
                     manageNetworkRequestResponse(sendResponse, request);
                     break;
+                case 'start-sniffing-network':
+                    manageSniffingNetwork(sendResponse);
+                    break;
                 default:
                     break;
             }
+        }
+
+        function manageSniffingNetwork(sendResponse) {
+            sendResponse({});
+            if ($timeout != null) {
+                $timeout.cancel(timeout);
+            }
+            $scope.showLoading = true;
+            timeout = $timeout(() => {
+                $scope.showLoading = false;
+            }, 3000);
+            $scope.$apply();
         }
 
         function manageNetworkRequestResponse(sendResponse, request) {
             $scope.data.push({
                 details: networkRequestsService.getRelevantRequestDetails(request)
             });
-            $scope.$apply();
             sendResponse({});
+            $scope.showLoading = false;
+            $scope.$apply();
+            console.log($scope.showLoading);
         }
 
     }

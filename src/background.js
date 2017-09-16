@@ -102,6 +102,7 @@ function enableNetworkDebugger(tabId) {
 
 function allEventHandler(tabId, debuggerId, message, params) {
     if (tabId === debuggerId.tabId) {
+        chrome.runtime.sendMessage({ directive: 'start-sniffing-network', params: params }, response => {});
         if (isNetworkResponseReceived()) {
             if (isXHRResponse()) {
                 manageNetworkResponse(tabId, params);
@@ -127,7 +128,7 @@ function manageNetworkResponse(tabId, params) {
     }, onResponseReceived);
 
     function onResponseReceived(xhrResponse) {
-        chrome.runtime.sendMessage({directive: 'network-request-response', params: params, response: xhrResponse}, function(response) {});
+        chrome.runtime.sendMessage({directive: 'network-request-response', params: params, response: xhrResponse}, response => {});
         console.log(params);
         console.log(xhrResponse);
     }

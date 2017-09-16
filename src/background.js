@@ -129,8 +129,6 @@ function manageNetworkResponse(tabId, params) {
 
     function onResponseReceived(xhrResponse) {
         chrome.runtime.sendMessage({directive: 'network-request-response', params: params, response: xhrResponse}, response => {});
-        console.log(params);
-        console.log(xhrResponse);
     }
 }
 

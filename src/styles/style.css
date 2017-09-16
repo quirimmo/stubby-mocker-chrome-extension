@@ -39,3 +39,7 @@ body {
 md-tabs {
     padding-bottom: 20px;
 }
+
+.code-container {
+    background: #f2fbff;
+}

@@ -64,19 +64,22 @@ function MainController($scope, chromeService, networkRequestsService, $timeout)
         $scope.showLoading = true;
         timeout = $timeout(() => {
             $scope.showLoading = false;
-        }, 3000);
+        }, 2500);
         $scope.$apply();
     }
 
     function manageNetworkRequestResponse(sendResponse, request) {
-        $scope.data.push({
-            details: networkRequestsService.getRelevantRequestDetails(request)
-        });
+        // add the request if and only if the same request has not been sniffed yet
+        if (angular.isUndefined($scope.data.find(el => el.details.request.id === request.params.requestId))) {
+            $scope.data.push({
+                details: networkRequestsService.getRelevantRequestDetails(request)
+            });
+        }
         sendResponse({});
         $scope.showLoading = false;
         $scope.$apply();
     }
 
-    
+
 
 }

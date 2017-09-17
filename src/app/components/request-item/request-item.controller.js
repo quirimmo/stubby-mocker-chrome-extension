@@ -69,23 +69,16 @@
             return vm.getPrettifiedJSON(networkRequestsService.getStubbyProxiesData(vm.item));
         }
 
-        function copyToClipboard(containerid) {
-            console.log(containerid);
-            // creating new textarea element and giveing it id 't'
-            let t = document.createElement('textarea');
-            t.id = 't';
-            // Optional step to make less noise in the page, if any!
-            t.style.height = 0;
-            // You have to append it to your page somewhere, I chose <body>
-            document.body.appendChild(t);
-            // Copy whatever is in your div to our new textarea
-            t.value = document.getElementById(containerid).innerText;
-            // Now copy whatever inside the textarea to clipboard
-            let selector = document.querySelector('#t');
+        function copyToClipboard(elementID) {
+            let tempElement = document.createElement('textarea');
+            tempElement.id = 'tempElement';
+            tempElement.style.height = 0;
+            document.body.appendChild(tempElement);
+            tempElement.value = document.getElementById(`${elementID}-${vm.item.details.request.id}`).innerText;
+            let selector = document.querySelector('#tempElement');
             selector.select();
             document.execCommand('copy');
-            // Remove the textarea
-            document.body.removeChild(t);
+            document.body.removeChild(tempElement);
         }
 
     }

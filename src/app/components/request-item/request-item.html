@@ -44,7 +44,7 @@
                             </section>
                             <section ng-show="vm.item.showMocksDetails">
                                 <md-content class="md-padding code-container">
-                                    <div id="stubby-mocks-code">
+                                    <div id="stubby-mocks-code-{{vm.item.details.request.id}}">
                                         <pre>{{vm.getMocksDetails()}}</pre>
                                     </div>
                                 </md-content>
@@ -58,10 +58,13 @@
                                 <md-button class="md-raised md-primary request-item-buttons" aria-label="Show Proxies" ng-click="vm.toggleProxiesDetails()">
                                     {{vm.toggleProxiesDetailsButtonText}}
                                 </md-button>
+                                <md-button class="md-raised md-primary request-item-buttons" aria-label="Copy Proxies To Clipboard" ng-click="vm.copyToClipboard('stubby-proxies-code')">
+                                    Copy To Clipboard
+                                </md-button>
                             </section>
                             <section ng-show="vm.item.showProxiesDetails">
                                 <md-content class="md-padding code-container">
-                                    <div>
+                                    <div id="stubby-proxies-code-{{vm.item.details.request.id}}">
                                         <pre>{{vm.getProxiesDetails()}}</pre>
                                     </div>
                                 </md-content>

@@ -71,9 +71,11 @@ function MainController($scope, chromeService, networkRequestsService, $timeout)
     function manageNetworkRequestResponse(sendResponse, request) {
         // add the request if and only if the same request has not been sniffed yet
         if (angular.isUndefined($scope.data.find(el => el.details.request.id === request.params.requestId))) {
+            let requestDetails = networkRequestsService.getRelevantRequestDetails(request);
             $scope.data.push({
-                details: networkRequestsService.getRelevantRequestDetails(request)
+                details: requestDetails
             });
+            networkRequestsService.saveRequestDetails(requestDetails);
         }
         sendResponse({});
         $scope.showLoading = false;

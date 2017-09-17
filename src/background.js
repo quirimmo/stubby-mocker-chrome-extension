@@ -21,6 +21,8 @@ function onMessageReceived(request, sender, sendResponse) {
             break;
         case 'current-tab':
             onCurrentTabRequest(sendResponse, request);
+        case 'save-request':
+            onSaveRequest(sendResponse, request);
         default:
             break;
     }
@@ -28,6 +30,32 @@ function onMessageReceived(request, sender, sendResponse) {
 
 // references to opened windows
 let windowReferences = [];
+
+function onSaveRequest(sendResponse, request) {
+    // HERE TRY TO SAVE DATA IN THE LOCAL STORAGE OF THE FIRING WEB PAGE
+
+    // console.log('Message received');
+    // console.log(request);
+    // windowReferences.localStorage.setItem('HACK', 'HACK ARE THE BESTS');
+    // chrome.storage.local.set({'color': 'QUIRINO'});
+    // localStorage.setItem("welcome-message", 'Hello Quirino!');
+    // var obj = {};
+    // obj['test'] = 'QUIRINO';
+    // var storage = chrome.storage.local;
+    // storage.set(obj);
+    // chrome.storage.sync.set(obj, () => {
+    //     // Notify that we saved.
+    //     if (chrome.extension.lastError) {
+    //         alert('An error occurred: ' + chrome.extension.lastError.message);
+    //     }
+    //     console.log('Settings saved');
+    //     sendResponse({});
+    // });
+    // request.requestDetails.request.id;
+    // chrome.storage.sync.get(['foo', 'bar'], function(items) {
+    //     message('Settings retrieved', items);
+    //   });
+}
 
 function onExtensionButtonClicked(sendResponse, request) {
     if (!windowReferences.find(el => el.tab.id === request.tab.id)) {
@@ -128,7 +156,7 @@ function manageNetworkResponse(tabId, params) {
     }, onResponseReceived);
 
     function onResponseReceived(xhrResponse) {
-        chrome.runtime.sendMessage({directive: 'network-request-response', params: params, response: xhrResponse}, response => {});
+        chrome.runtime.sendMessage({ directive: 'network-request-response', params: params, response: xhrResponse }, response => {});
     }
 }
 

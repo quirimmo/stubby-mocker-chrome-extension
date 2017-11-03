@@ -1,0 +1,80 @@
+<md-list-item class="md-1-line request-list-item">
+    <div class="md-list-item-text request-list-item-content" layout="column">
+
+        <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+            <h3>{{vm.item.details.request.url}}</h3>
+            <span flex></span>
+            <md-button class="md-raised md-primary request-item-buttons" aria-label="Open Details" ng-click="vm.toggleDetails()">
+                {{vm.toggleDetailsButtonText}}
+            </md-button>
+            <md-button class="md-raised md-primary request-item-buttons" aria-label="Remove Request" ng-click="vm.removeRequest()">
+                Remove Request
+            </md-button>
+        </section>
+
+        <div ng-show="vm.item.showDetails">
+
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="Request Details">
+                    <md-content class="md-padding code-container">
+                        <div>
+                            <pre>{{vm.getPrettifiedJSON(vm.item.details.request)}}</pre>
+                        </div>
+                    </md-content>
+                </md-tab>
+                <md-tab label="Response Details">
+                    <md-content class="md-padding code-container">
+                        <div>
+                            <pre>{{vm.getPrettifiedJSON(vm.item.details.response)}}</pre>
+                        </div>
+                    </md-content>
+                </md-tab>
+                <md-tab label="Stubby">
+                    <md-content class="md-padding">
+                        <section>
+                            <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                                <h4>Mocks Details</h4>
+                                <span flex></span>
+                                <md-button class="md-raised md-primary request-item-buttons" aria-label="Show Mocks" ng-click="vm.toggleMocksDetails()">
+                                    {{vm.toggleMocksDetailsButtonText}}
+                                </md-button>
+                                <md-button class="md-raised md-primary request-item-buttons" aria-label="Copy Mocks To Clipboard" ng-click="vm.copyToClipboard('stubby-mocks-code')">
+                                    Copy To Clipboard
+                                </md-button>
+                            </section>
+                            <section ng-show="vm.item.showMocksDetails">
+                                <md-content class="md-padding code-container">
+                                    <div id="stubby-mocks-code-{{vm.item.details.request.id}}">
+                                        <pre>{{vm.getMocksDetails()}}</pre>
+                                    </div>
+                                </md-content>
+                            </section>
+                        </section>
+                        <md-divider></md-divider>
+                        <section>
+                            <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                                <h4>Proxies Details</h4>
+                                <span flex></span>
+                                <md-button class="md-raised md-primary request-item-buttons" aria-label="Show Proxies" ng-click="vm.toggleProxiesDetails()">
+                                    {{vm.toggleProxiesDetailsButtonText}}
+                                </md-button>
+                                <md-button class="md-raised md-primary request-item-buttons" aria-label="Copy Proxies To Clipboard" ng-click="vm.copyToClipboard('stubby-proxies-code')">
+                                    Copy To Clipboard
+                                </md-button>
+                            </section>
+                            <section ng-show="vm.item.showProxiesDetails">
+                                <md-content class="md-padding code-container">
+                                    <div id="stubby-proxies-code-{{vm.item.details.request.id}}">
+                                        <pre>{{vm.getProxiesDetails()}}</pre>
+                                    </div>
+                                </md-content>
+                            </section>
+                        </section>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+
+        </div>
+    </div>
+    <md-divider></md-divider>
+</md-list-item>

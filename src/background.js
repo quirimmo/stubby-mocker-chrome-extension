@@ -7,8 +7,8 @@ const DEFAULT_WINDOW_OPTIONS = {
     focused: true,
     top: 0,
     left: 0,
-    width: 1024,
-    height: 768
+    width: 1200,
+    height: 800
 };
 
 // listener for messages received from other scripts
@@ -21,6 +21,8 @@ function onMessageReceived(request, sender, sendResponse) {
             break;
         case 'current-tab':
             onCurrentTabRequest(sendResponse, request);
+        case 'save-request':
+            onSaveRequest(sendResponse, request);
         default:
             break;
     }
@@ -28,6 +30,32 @@ function onMessageReceived(request, sender, sendResponse) {
 
 // references to opened windows
 let windowReferences = [];
+
+function onSaveRequest(sendResponse, request) {
+    // HERE TRY TO SAVE DATA IN THE LOCAL STORAGE OF THE FIRING WEB PAGE
+
+    // console.log('Message received');
+    // console.log(request);
+    // windowReferences.localStorage.setItem('HACK', 'HACK ARE THE BESTS');
+    // chrome.storage.local.set({'color': 'QUIRINO'});
+    // localStorage.setItem("welcome-message", 'Hello Quirino!');
+    // var obj = {};
+    // obj['test'] = 'QUIRINO';
+    // var storage = chrome.storage.local;
+    // storage.set(obj);
+    // chrome.storage.sync.set(obj, () => {
+    //     // Notify that we saved.
+    //     if (chrome.extension.lastError) {
+    //         alert('An error occurred: ' + chrome.extension.lastError.message);
+    //     }
+    //     console.log('Settings saved');
+    //     sendResponse({});
+    // });
+    // request.requestDetails.request.id;
+    // chrome.storage.sync.get(['foo', 'bar'], function(items) {
+    //     message('Settings retrieved', items);
+    //   });
+}
 
 function onExtensionButtonClicked(sendResponse, request) {
     if (!windowReferences.find(el => el.tab.id === request.tab.id)) {
@@ -102,6 +130,7 @@ function enableNetworkDebugger(tabId) {
 
 function allEventHandler(tabId, debuggerId, message, params) {
     if (tabId === debuggerId.tabId) {
+        chrome.runtime.sendMessage({ directive: 'start-sniffing-network', params: params }, response => {});
         if (isNetworkResponseReceived()) {
             if (isXHRResponse()) {
                 manageNetworkResponse(tabId, params);
@@ -127,9 +156,7 @@ function manageNetworkResponse(tabId, params) {
     }, onResponseReceived);
 
     function onResponseReceived(xhrResponse) {
-        chrome.runtime.sendMessage({directive: 'network-request-response', params: params, response: xhrResponse}, function(response) {});
-        console.log(params);
-        console.log(xhrResponse);
+        chrome.runtime.sendMessage({ directive: 'network-request-response', params: params, response: xhrResponse }, response => {});
     }
 }
 

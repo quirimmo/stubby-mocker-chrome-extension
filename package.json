@@ -1,0 +1,24 @@
+{
+  "name": "network-calls-mocker-plus-stubby-generator",
+  "version": "1.0.0",
+  "description": "This extension shows all the network calls performed by a page and it makes them available in the local storage if you want to access them. Then it automatically generates your mocked call if you are using stubby for mocking the apis",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quirimmo/stubby-mocker-chrome-extension.git"
+  },
+  "author": "Quirino Lo Russo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/quirimmo/stubby-mocker-chrome-extension/issues"
+  },
+  "homepage": "https://github.com/quirimmo/stubby-mocker-chrome-extension#readme",
+  "dependencies": {
+    "angular": "^1.6.6",
+    "angular-aria": "^1.6.6",
+    "angular-material": "^1.1.4"
+  }
+}

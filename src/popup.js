@@ -13,4 +13,5 @@ chrome.tabs.query(queryInfo, function(tabs) {
     chrome.runtime.sendMessage({directive: 'clicked-extension-button', tab: currentTab}, function(response) {
         _this.close();
     });
+    chrome.storage.local.set({'TEST': 'POPUP TEST'});
 });

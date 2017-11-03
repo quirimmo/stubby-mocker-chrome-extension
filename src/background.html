@@ -13,36 +13,54 @@
             display: none !important;
         }
     </style>
+    <link rel="stylesheet" media="all" href="./vendors/angular-material.min.css">
     <link rel="stylesheet" media="all" href="./styles/style.css">
 </head>
 
-<body data-ng-controller="MainController">
-    
-    <div class="main-container">
-        <div>
-            Current tab id: {{currentTabID}}
+<body data-ng-controller="MainController" ng-cloak>
+
+    <md-content>
+        <div class="main-container" layout="column">
+            <!-- title toolbar -->
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>
+                        <span>Sniffing tab {{currentTabID}}: <b>{{currentTabTitle}}</b></span>
+                    </h2>
+                    <span flex></span>
+                    <md-button class="md-raised" aria-label="Clear" ng-click="clearData()">Clear</md-button>
+                </div>
+            </md-toolbar>
+            <!-- loading section -->
+            <section ng-show="showLoading">
+                <md-divider></md-divider>
+                <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+                <md-divider></md-divider>
+            </section>
+            <!-- list of sniffed requests -->
+            <md-list ng-show="data.length" flex>
+                <md-subheader class="md-no-sticky">Sniffed Requests:</md-subheader>
+                <request-item 
+                ng-repeat="item in data track by $index" 
+                item="item"
+                on-remove-request="removeRequestItem(item)">
+                </request-item>
+            </md-list>
         </div>
-        <div>
-            Current tab title: {{currentTabTitle}}
-        </div>
-        <div>
-            <button ng-click="clearResponses()">Clear</button>
-        </div>
-        <div ng-repeat="response in responses track by $index">
-            <div>
-                Response {{$index}}
-            </div>
-            <!-- <pre>{{response.response}}</pre>
-            <pre>{{response.params}}</pre> -->
-        </div>
-    </div>
+    </md-content>
 
 
     <script src="./vendors/jquery-3.2.1.min.js"></script>
     <script src="./vendors/angular.min.js"></script>
+    <script src="./vendors/angular-aria.min.js"></script>
+    <script src="./vendors/angular-animate.min.js"></script>
+    <script src="./vendors/angular-material.min.js"></script>
     <script src="./app/app.js"></script>
     <script src="./app/controllers/main.controller.js"></script>
     <script src="./app/services/chrome.service.js"></script>
+    <script src="./app/services/network-requests.service.js"></script>
+    <script src="./app/components/request-item/request-item.controller.js"></script>
+    <script src="./app/components/request-item/request-item.component.js"></script>
 </body>
 
 </html>

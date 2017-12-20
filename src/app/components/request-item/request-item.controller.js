@@ -14,6 +14,7 @@
 
         vm.getMocksDetails = getMocksDetails;
         vm.getProxiesDetails = getProxiesDetails;
+        vm.getNgApiMocksDetails = getNgApiMocksDetails;
         vm.toggleDetails = toggleDetails;
         vm.toggleMocksDetails = toggleMocksDetails;
         vm.toggleProxiesDetails = toggleProxiesDetails;
@@ -67,6 +68,10 @@
 
         function getProxiesDetails() {
             return vm.getPrettifiedJSON(networkRequestsService.getStubbyProxiesData(vm.item));
+        }
+
+        function getNgApiMocksDetails() {
+            return vm.getPrettifiedJSON(networkRequestsService.getNgApiMockData(vm.item));
         }
 
         function copyToClipboard(elementID) {

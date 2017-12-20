@@ -10,6 +10,7 @@
 
         this.getRelevantRequestDetails = getRelevantRequestDetails;
         this.getStubbyMocksData = getStubbyMocksData;
+        this.getNgApiMockData = getNgApiMockData;
         this.getStubbyProxiesData = getStubbyProxiesData;
         this.saveRequestDetails = saveRequestDetails;
 
@@ -62,6 +63,30 @@
             return retObj;
         }
 
+        function getNgApiMockData(item) {
+            let retObj = {
+                "name" : item.details.request.endpoint,
+                "method" : item.details.request.method,
+                "isArray" : true,
+                "expression" : coolFunctionThatDoesWondersGoesHere(item.details.request.endpoint),
+                "response" : {
+                    "default-scnenario" : {
+                        "defaults" : true, // errrrr...
+                        "status" : item.details.response.status,
+                        "statusText" : item.details.response.statusText,
+                        "delay" : 100, /// errrr.....
+                        "headers" : item.details.response.headers, // errr,
+                    } 
+                }
+            };
+
+            if (item.details.request.method === "POST") {
+                retObj.response["default-scnenario"].data = item.details.response.body;
+            }
+
+            return retObj;
+        }
+
         function getStubbyProxiesData(item) {
             let retObj = {
                 "regex": "REGEX for " + item.details.request.endpoint,
@@ -77,7 +102,10 @@
 			}, (response) => {});
         }
 
-
+        // does nothing because we can't really guess it can we?
+        function coolFunctionThatDoesWondersGoesHere(endpoint) {
+            return endpoint;
+        }
     }
 
 })();

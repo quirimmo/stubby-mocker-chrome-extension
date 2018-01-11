@@ -72,23 +72,6 @@
                         </section>
                     </md-content>
                 </md-tab>
-                <md-tab label="ng-Apimock">
-                    <md-content class="md-padding">
-                        <section>
-                            <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-                                <h4>Mock Details</h4>
-                                <span flex></span>
-                                <md-button class="md-raised md-primary request-item-buttons" aria-label="Copy Mocks To Clipboard" ng-click="vm.copyToClipboard('ng-apimock-mocks-code')">Copy To Clipboard</md-button>
-                            </section>
-                        </section>
-                        <section>
-                            <md-content class="md-padding code-container">
-                                <div id="api-ngmock-mocks-code-{{vm.item.details.request.id}}">
-                                    <pre>{{vm.getNgApiMocksDetails()}}</pre>
-                                </div>
-                            </md-content>
-                        </section>
-                    </md-content>
             </md-tabs>
 
         </div>
